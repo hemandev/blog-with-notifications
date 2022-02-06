@@ -2,9 +2,15 @@ import { Auth } from '@supabase/ui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { supabaseClient } from '../lib/supabase/client'
+import { Engagespot } from '@engagespot/react-component'
+import { User } from '@supabase/supabase-js'
 
-function Header() {
-  const { user, session } = Auth.useUser()
+interface HeaderProps {
+  user: User
+}
+
+function Header({ user }: HeaderProps) {
+  //const { user, session } = Auth.useUser()
   const router = useRouter()
   return (
     <header className="pb-6">
@@ -18,6 +24,29 @@ function Header() {
         <Link href="/posts">
           <a className="mr-auto">Posts</a>
         </Link>
+        <Engagespot
+          apiKey="ocvy158s7unpsmi70bfb"
+          userId={user?.email || ''}
+          enableNonHttpsWebPush={true}
+          theme={{
+            panel: {
+              height: '35rem',
+              width: '27rem',
+            },
+            notificationButton: {
+              iconFill: '#000'
+            },
+            colors: {
+              brandingPrimary: 'rgb(16 185 129)',
+            },
+            header: {
+              height: '2.5rem',
+            },
+            footer: {
+              height: '2.5rem'
+            }
+          }}
+        />
         <Link href="/create-new">
           <a className="bg-emerald-500 hover:bg-emerald-600 ease-in transition-all py-2 px-4  rounded text-white">
             Create New

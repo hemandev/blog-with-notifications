@@ -26,13 +26,11 @@ const Home = ({ trendingPosts = [], ...props }: HomeProps) => {
     session ? ['/api/auth/getUser', session.access_token] : null,
     fetcher
   )
-  console.log(user, session)
   const [authView, setAuthView] = useState('sign_in')
 
   useEffect(() => {
     const { data: authListener } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
-        console.log('Event changed', event)
         if (event === 'PASSWORD_RECOVERY') {
           setAuthView('forgotten_password')
         }
@@ -78,7 +76,7 @@ const Home = ({ trendingPosts = [], ...props }: HomeProps) => {
     return (
       <>
         {user && (
-          <Container>
+          <Container user={user}>
             <div className="container max-w-4xl m-auto px-4 my-10 flex flex-col items-center justify-center">
               <div className="mb-10">
                 <Image
@@ -106,7 +104,6 @@ const Home = ({ trendingPosts = [], ...props }: HomeProps) => {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  console.log('headers', context.req.headers)
   const trendingPosts = await getTrendingPosts()
   return {
     props: { trendingPosts },

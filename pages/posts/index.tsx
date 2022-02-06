@@ -1,3 +1,4 @@
+import { User } from '@supabase/supabase-js'
 import { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
 import Container from '../../components/container'
@@ -7,11 +8,12 @@ import { supabaseClient } from '../../lib/supabase/client'
 
 interface PostsProps {
   allPosts: Post[]
+  user: User
 }
 
-export default function Posts({ allPosts = [] }: PostsProps) {
+export default function Posts({ allPosts = [], user }: PostsProps) {
   return (
-    <Container>
+    <Container user={user}>
       <PostList posts={allPosts} />
     </Container>
   )
@@ -22,7 +24,7 @@ export async function getServerSideProps({ req }: GetServerSidePropsContext) {
   if (!user) {
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
-  
+
   const allPosts = await getAllPosts()
   return {
     props: { allPosts, user },

@@ -22,7 +22,7 @@ export default function PostPage({ post, user }: PostPageProps) {
   }
 
   return (
-    <Container>
+    <Container user={user}>
       <Head>
         <title>{post.title} | My awesome blog</title>
       </Head>
@@ -102,7 +102,6 @@ export async function getServerSideProps({
   }
   const post = await getPostBySlug(params?.slug as string)
   const { html, frontMatter } = await getPostAsHtml(post?.content as string)
-  console.log('user cookie', user)
   return {
     props: { post: { ...post, content: html, frontMatter }, user },
   }

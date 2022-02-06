@@ -6,10 +6,15 @@ import Container from '../components/container'
 import { createPost, getPostAsHtml, getPostBySlug } from '../lib/post'
 import { GetServerSidePropsContext } from 'next'
 import { supabaseClient } from '../lib/supabase/client'
+import { User } from '@supabase/supabase-js'
+
+interface CreateNewProps {
+  user: User
+}
 
 const initialState = { title: '', content: '' }
 
-function CreateNew() {
+function CreateNew({ user }: CreateNewProps) {
   const [post, setPost] = useState(initialState)
   const { title, content } = post
   const router = useRouter()
@@ -26,7 +31,7 @@ function CreateNew() {
     router.push(`/posts/${post.slug}`)
   }
   return (
-    <Container>
+    <Container user={user}>
       <h1 className="text-3xl font-semibold tracking-wide my-6">
         Create new post
       </h1>
@@ -61,7 +66,7 @@ export async function getServerSideProps({
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
   return {
-    props: {},
+    props: { user },
   }
 }
 
