@@ -8,8 +8,6 @@ export default function useComments(postId: string, user: User) {
   const [text, setText] = useState('')
   const isAuthenticated = user != null
 
-  console.log('User is ', user)
-
   const { data: comments, mutate } = useSWR(postId, getComments)
 
   const onSubmit = async (e: Event) => {
